@@ -2,8 +2,8 @@
 
 "use strict";
 
-const BLACK = "B";
-const WHITE = "W";
+const BLACK = 1;
+const WHITE = 2;
 
 let gamestate;          //0-80: field, 81: playerId, 82: playerPoints, 83: opponentId, 84: opponentPoints, 85; turn
 let currentPlayer;
@@ -68,6 +68,7 @@ function removeStone(pos, visited, color) {
         return 0;
     }
 
+    gamestate[pos] = 0;
     gamestate[82] = gamestate[82] + 1;  //increase player score
     if(pos > 8 && visited[pos - 8] == 0) {   //up
         removeStone(pos - 8, visited, color);
