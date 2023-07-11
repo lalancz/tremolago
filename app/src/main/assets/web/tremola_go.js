@@ -17,7 +17,7 @@ function startTremolaGo(playerId, opponentId) {
     gamestate[82] = 0;      //player points
     gamestate[83] = opponentId;
     gamestate[84] = 0;      //opponent points
-    gamestate[85] = 0;
+    gamestate[85] = 0;      //
     currentPlayer = BLACK;
     playerColor = BLACK;    //TODO determine color
     opponentColor = WHITE;
@@ -31,22 +31,22 @@ function putStone(pos) {
 
     //capture stones
     if(pos > 8) {   //up
-        if(gamestate[pos - 9] == opponentColor && getLiberties(pos - 9) == 0) {
+        if(gamestate[pos - 9] == opponentColor) {
             captureStones(pos - 9);
         }
     }
     if(pos < 72) {  //down
-        if(gamestate[pos + 9] == opponentColor && getLiberties(pos + 9) == 0) {
+        if(gamestate[pos + 9] == opponentColor) {
             captureStones(pos + 9);
         }
     }
     if(pos % 9 > 0) {   //left
-        if(gamestate[pos - 1] == opponentColor && getLiberties(pos - 1) == 0) {
+        if(gamestate[pos - 1] == opponentColor) {
             captureStones(pos - 1);
         }
     }
     if(pos % 9 < 8) {   //right
-        if(gamestate[pos + 1] == opponentColor && getLiberties(pos + 1) == 0) {
+        if(gamestate[pos + 1] == opponentColor) {
             captureStones(pos + 1);
         }
     }
@@ -56,7 +56,30 @@ function captureStones(pos) {
     visited = new Array(81).fill(0);
     liberties = getLiberties(pos, visited);
     if(liberties == 0) {
-        //TODO capture stones
+        color = gamestate[pos];
+        visited = new Array(81).fill(0);
+        removeStone(pos, visited, color);
+    }
+}
+
+function removeStone(pos, visited, color) {
+    visited[pos] = 1;
+    if(gamestate[pos] != color) {
+        return 0;
+    }
+
+    gamestate[82] = gamestate[82] + 1;  //increase player score
+    if(pos > 8 && visited[pos - 8] == 0) {   //up
+        removeStone(pos - 8, visited, color);
+    }
+    if(pos < 72 && visited[pos + 8] == 0) {   //down
+        removeStone(pos + 8, visited, color);
+    }
+    if(pos % 9 > 0 && visited[pos - 1] == 0) {   //left
+        removeStone(pos - 1, visited, color);
+    }
+    if(pos % 9 < 8 && visited[pos + 1] == 0) {   //right
+        removeStone(pos + 1, visited, color);
     }
 }
 
@@ -89,7 +112,7 @@ function getLiberties(pos, visited) {
             liberties = getLiberties(pos - 1, visited);
         }
     }
-    if(pos % 9 < 8 && visited[pos + 1] == 0) {   //left
+    if(pos % 9 < 8 && visited[pos + 1] == 0) {   //right
         if(gamestate[pos + 1] == 0) {       //neighbor is free
             liberties = liberties + 1;
             visited[pos + 1] = 1;
