@@ -5,28 +5,34 @@
 const BLACK = 1;
 const WHITE = 2;
 
-let gamestate;          //0-80: field, 81: playerId, 82: playerPoints, 83: opponentId, 84: opponentPoints, 85; turn
+let gamestate;          //0-80: field, 81: playerId, 82: playerPoints, 83: opponentId, 84: opponentPoints, 85: turn, 86: pass counter
 let currentPlayer;
 let playerColor;
 let opponentColor;
 
 
 function startTremolaGo(playerId, opponentId) {
-    gamestate = new Array(86).fill(0);
+    gamestate = new Array(87).fill(0);
     gamestate[81] = playerId;
     gamestate[82] = 0;      //player points
     gamestate[83] = opponentId;
     gamestate[84] = 0;      //opponent points
-    gamestate[85] = 0;      //
+    gamestate[85] = 0;      //turn counter
+    gamestate[86] = 0;      //pass counter
     currentPlayer = BLACK;
     playerColor = BLACK;    //TODO determine color
     opponentColor = WHITE;
 }
 
 function putStone(pos) {
+    if(pos == 0) {
+        gamestate[86] = gamestate[86] + 1;      //pass the turn
+        return;
+    }
     //put stone into play
     if(pos >= 0 && pos < 81) {
         gamestate[pos] = playerColor;
+        gamestate[86] = 0;
     }
 
     //capture stones
@@ -123,6 +129,19 @@ function getLiberties(pos, visited) {
         }
     }
     return liberties;
+}
+
+function isPlayersTurn(myId) {
+    if(gamestate[85] % 2 == 0 && gamestate[81] == myId) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function isGameOver() {
+    //if both players passed their turn consecutively, the game is over
+    return (gamestate[86] >= 2);
 }
 
 // eof
