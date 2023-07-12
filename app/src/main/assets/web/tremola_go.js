@@ -144,4 +144,14 @@ function isGameOver() {
     return (gamestate[86] >= 2);
 }
 
+function getWinner() {
+    if(gamestate[82] > gamestate[84]) {
+        return gamestate[81];
+    } else if(gamestate[84] > gamestate[82]) {
+        return gamestate[83];
+    } else {
+        return -1;      //draw
+    }
+}
+
 // eof
