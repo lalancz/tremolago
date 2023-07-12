@@ -8,14 +8,14 @@ let display_or_not = [
     'div:qr', 'div:back',
     'core', 'lst:chats', 'lst:posts', 'lst:contacts', 'lst:members', 'the:connex',
     'div:footer', 'div:textarea', 'div:confirm-members', 'plus',
-    'div:settings'
+    'div:settings', "game:ui"
 ];
 
 let prev_scenario = 'chats';
 let curr_scenario = 'chats';
 
 // Array of the scenarios that have a button in the footer
-const main_scenarios = ['chats', 'contacts', 'connex'];
+const main_scenarios = ['chats', 'contacts', 'connex', 'game'];
 
 const buttonList = ['btn:chats', 'btn:posts', 'btn:contacts', 'btn:connex'];
 
@@ -30,13 +30,15 @@ let scenarioDisplay = {
     'posts': ['div:back', 'core', 'lst:posts', 'div:textarea'],
     'connex': ['div:qr', 'core', 'the:connex', 'div:footer', 'plus'],
     'members': ['div:back', 'core', 'lst:members', 'div:confirm-members'],
-    'settings': ['div:back', 'div:settings']
+    'settings': ['div:back', 'div:settings'],
+    'game' : ['game:ui']
 }
 
 let scenarioMenu = {
     'chats': [['New conversation', 'menu_new_conversation'],
         ['Settings', 'menu_settings'],
-        ['About', 'menu_about']],
+        ['About', 'menu_about'],
+        ['About Go (game)', 'menu_game']],
     'contacts': [['New contact', 'menu_new_contact'],
         ['Settings', 'menu_settings'],
         ['About', 'menu_about']],
@@ -46,6 +48,7 @@ let scenarioMenu = {
         ['About', 'menu_about']],
     'posts': [['Rename', 'menu_edit_convname'],
         ['(un)Forget', 'menu_forget_conv'],
+        ['Go (game)', 'menu_go'],
         ['Settings', 'menu_settings'],
         ['About', 'menu_about']],
     'members': [['Settings', 'menu_settings'],
@@ -169,6 +172,8 @@ function closeOverlay() {
     document.getElementById('about-overlay').style.display = 'none';
     document.getElementById('edit-overlay').style.display = 'none';
     document.getElementById('old_contact-overlay').style.display = 'none';
+    document.getElementById('about_go-overlay').style.display = 'none';
+    document.getElementById('go-overlay').style.display = 'none';
     overlayIsActive = false;
 }
 
@@ -317,6 +322,13 @@ function look_up(shortname) {
     } else {
         launch_snackbar(`"${shortname}" is not a valid Shortname`)
     }
+}
+
+function menu_game() {
+    closeOverlay();
+    document.getElementById('about_go-overlay').style.display = 'initial';
+    document.getElementById('overlay-bg').style.display = 'initial';
+    overlayIsActive = true;
 }
 
 // ---

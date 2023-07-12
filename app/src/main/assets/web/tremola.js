@@ -163,6 +163,20 @@ function menu_forget_conv() {
         load_chat(curr_chat) // refresh currently displayed list of posts
 }
 
+function menu_go() {
+//    if (curr_chat == recps2nm([myId])) {
+//        launch_snackbar("cannot play games with yourself");
+//        return;
+//    }
+
+     closeOverlay();
+     document.getElementById('go-overlay').style.display = 'initial';
+     document.getElementById('overlay-bg').style.display = 'initial';
+     overlayIsActive = true;
+
+
+}
+
 function menu_import_id() {
     // backend('secret: XXX');
     closeOverlay();

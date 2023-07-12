@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="tremola.css" media="screen"/>
@@ -7,9 +7,15 @@
     <script type="text/javascript" charset="UTF-8" src="tremola_settings.js"></script>
     <script type="text/javascript" charset="UTF-8" src="tremola_ui.js"></script>
     <script type="text/javascript" charset="UTF-8" src="qrcode.min.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="tremola_go.js"></script>
 </head>
 <body style="background-image: url('img/splash-as-background.jpg'); background-size: cover; background-color: white; overflow: hidden"
       onload="backend('ready');">
+<div id="game:ui" style="height: calc(100% - 118px); overflow: scroll; width: 100%;">
+    <div style="background-image: url('img/go_board.svg');">
+
+    </div>
+</div>
 <div style="width: 100%; height: 100%; margin: 0px">
 
     <div id='menu' class='menu-overlay'>
@@ -174,6 +180,29 @@
             <div id="qr-code" style="padding-bottom: 5pt; align: center;"></div>
             <div id="qr-text" align=left style='overflow-wrap: anywhere; font-family: Courier;font-size: small;'>did
             </div>
+        </div>
+
+        <div id='about_go-overlay' class='qr-overlay' style="overflow: scroll; font-size: medium; height: 75%;">
+            <div style="text-align: center;">
+                <font size=+1><em>About Go</em></font><br>
+                <font size=-2>
+                    <br><br>How to play
+
+                    <hr>
+
+                    <p>Lorem Ipsum<br><br><br>
+
+                    Rules
+
+                    <hr>
+
+                    <p>Lorem Ipsum
+                </font>
+            </div>
+        </div>
+
+        <div id='go-overlay' class='qr-overlay' style="align: center; background-image: url('img/go_board.svg'); height: 35%; background-size: cover;">
+            <div></div>
         </div>
 
         <div id='preview-overlay' class='qr-overlay'>
