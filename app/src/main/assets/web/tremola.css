@@ -356,3 +356,18 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+.go_board_buttons {
+    margin: 7px;
+}
+
+.go_button {
+      background-color: #ffffff00;
+      border: none;
+      color: white;
+      padding: 15.5px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      border-radius: 50%;
+}
