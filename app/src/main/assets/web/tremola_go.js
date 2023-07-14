@@ -35,6 +35,20 @@ function sendGameState() {
     post_new_gamestate("tremola_go", gamestate);
 
     if(isGameOver()) {
+        if (getWinner() == myId) {
+            document.getElementById('winner-overlay').style.display = 'initial';
+            document.getElementById('overlay-bg').style.display = 'initial';
+            overlayIsActive = true;
+        } else if (getWinner() == -1) {
+            document.getElementById('loser-overlay').style.display = 'initial';
+            document.getElementById('overlay-bg').style.display = 'initial';
+            overlayIsActive = true;
+        } else {
+            document.getElementById('tie-overlay').style.display = 'initial';
+            document.getElementById('overlay-bg').style.display = 'initial';
+            overlayIsActive = true;
+        }
+
         remove_gamestate("tremola_go");
     }
 }

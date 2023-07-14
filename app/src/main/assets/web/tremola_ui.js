@@ -176,6 +176,9 @@ function closeOverlay() {
     document.getElementById('old_contact-overlay').style.display = 'none';
     document.getElementById('about_go-overlay').style.display = 'none';
     document.getElementById('go-overlay').style.display = 'none';
+    document.getElementById('winner-overlay').style.display = 'none';
+    document.getElementById('loser-overlay').style.display = 'none';
+    document.getElementById('tie-overlay').style.display = 'none';
     overlayIsActive = false;
 }
 
