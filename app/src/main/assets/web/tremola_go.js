@@ -5,7 +5,7 @@
 const BLACK = 1;
 const WHITE = 2;
 
-let gamestate;          //0-80: field, 81: playerId, 82: playerPoints, 83: opponentId, 84: opponentPoints, 85: turn, 86: pass counter
+let gamestate;          //0-80: field, 81: blackId, 82: blackPoints, 83: whiteId, 84: whitePoints, 85: turn, 86: pass counter
 let currentPlayer;
 let playerColor;
 let opponentColor;
@@ -29,9 +29,15 @@ function loadTremolaGo(nextGameState) {
     //TODO: ui
 }
 
+function sendGameState() {
+    //TODO
+}
+
 function putStone(pos) {
-    if(pos == 0) {
-        gamestate[86] = gamestate[86] + 1;      //pass the turn
+    gamestate[86] = gamestate[86] + 1;
+    if(pos == -1) {
+        //pass the turn
+        sendGameState();
         return;
     }
     //put stone into play
@@ -61,6 +67,8 @@ function putStone(pos) {
             captureStones(pos + 1);
         }
     }
+
+    sendGameState();
 }
 
 function captureStones(pos) {
@@ -179,6 +187,18 @@ function makeMove(id) {
     } else {
         document.getElementById(id).style.backgroundColor = '#FFFFFF';
     }
+}
+
+function forfeit() {
+    //set players points to -1 and pass counter to 2
+    //so end condition for game is met and player loses due to points
+    if(myId === gamestate[81]) {    //black
+        gamestate[82] = -1;
+    } else {                        //white
+        gamestate[84] = -1;
+    }
+    gamestate[86] = 2;
+    sendGameState();
 }
 
 // eof
