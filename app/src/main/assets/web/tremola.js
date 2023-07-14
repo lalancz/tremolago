@@ -574,7 +574,6 @@ function backend(cmdStr) { // send this to Kotlin (or simulate in case of browse
         return;
     }
     cmdStr = cmdStr.split(' ')
-    launch_snackbar("backend");
     if (cmdStr[0] === 'ready')
         b2f_initialize('@AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=.ed25519')
     else if (cmdStr[0] === 'exportSecret')
@@ -594,7 +593,6 @@ function backend(cmdStr) { // send this to Kotlin (or simulate in case of browse
         // console.log('e=', JSON.stringify(e))
         b2f_new_event(e)
     } else if (cmdStr[0] === 'priv:gamePost') {
-        launch_snackbar("backend: game post");
         const gameName = cmdStr[1];
         const gameState = cmdStr[2];
         const recp = cmdStr[3];
@@ -713,7 +711,6 @@ function b2f_new_event(e) { // incoming SSB log event: we get map with three ent
         load_chat_list();
         // console.log(JSON.stringify(tremola))
     } else if (e.confid && e.confid.type === 'gamePost') {
-        //launch_snackbar("rcv gamePost");
         const gameName = e.confid.gameName;
         if(!('games' in tremola)) {
             tremola.games = {};
@@ -801,11 +798,11 @@ function post_new_gamestate(gameName, gameState) {
     const opponent_id = get_opponent_id();
     //update stored gamestate for sender
     tremola.games[gameName][opponent_id] = gamestate;
-    launch_snackbar("updated gamestate");
+    launch_snackbar("update gamestate");
 
     //send gamestate to opponent
     backend("priv:gamePost " + gameName + " " + gameState + " " + opponent_id);
-    //backend("priv:post " + btoa("Game Update: " + gameName) + " " + opponent_id);
+    backend("priv:post " + btoa("Game Update: " + gameName) + " " + opponent_id);
 }
 
 function remove_gamestate(gameName) {
