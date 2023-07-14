@@ -125,6 +125,23 @@ class WebAppInterface(private val act: Activity, val tremolaState: TremolaState,
                 evnt?.let { rx_event(it) } // persist it, propagate horizontally and also up
                 return
             }
+            "priv:gamePost" -> { // Post a private chat for the game
+                // atob(text) recipient
+                val gameName = args[1]
+                val gameState = args[2]
+                val recp = args[3]
+                val rawStr = tremolaState.msgTypes.mkGamePost(
+                    gameName,
+                    gameState,
+                    recp
+                )
+                val evnt = tremolaState.msgTypes.jsonToLogEntry(
+                    rawStr,
+                    rawStr.encodeToByteArray()
+                )
+                evnt?.let { rx_event(it) } // persist it, propagate horizontally and also up
+                return
+            }
             "priv:hash" -> { // Compute the shortname from the public key
                 // The second arg is the name of the method to call with the result of the hash
                 val shortname = id2(args[1])

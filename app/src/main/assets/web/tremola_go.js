@@ -32,7 +32,11 @@ function loadTremolaGo(nextGameState) {
 }
 
 function sendGameState() {
-    //TODO
+    post_new_gamestate("tremola_go", gamestate);
+
+    if(isGameOver()) {
+        remove_gamestate("tremola_go");
+    }
 }
 
 function putStone(pos) {
