@@ -77,10 +77,8 @@ function putStone(pos) {
 function captureStones(pos) {
     var visited = new Array(81).fill(0);
     var liberties = getLiberties(pos, visited);
-    //launch_snackbar(liberties.toString());
     if(liberties == 0) {
-        //launch_snackbar("pre-remove");
-        color = gamestate[pos];
+        var color = gamestate[pos];
         visited = new Array(81).fill(0);
         removeStone(pos, visited, color);
     }
@@ -94,11 +92,11 @@ function removeStone(pos, visited, color) {
 
     gamestate[pos] = 0;
     gamestate[82] = gamestate[82] + 1;  //increase player score
-    if(pos > 8 && visited[pos - 8] == 0) {   //up
-        removeStone(pos - 8, visited, color);
+    if(pos > 8 && visited[pos - 9] == 0) {   //up
+        removeStone(pos - 9, visited, color);
     }
-    if(pos < 72 && visited[pos + 8] == 0) {   //down
-        removeStone(pos + 8, visited, color);
+    if(pos < 72 && visited[pos + 9] == 0) {   //down
+        removeStone(pos + 9, visited, color);
     }
     if(pos % 9 > 0 && visited[pos - 1] == 0) {   //left
         removeStone(pos - 1, visited, color);
@@ -110,22 +108,23 @@ function removeStone(pos, visited, color) {
 
 function getLiberties(pos, visited) {
     var liberties = 0;
-    if(pos > 8 && visited[pos - 8] == 0) {   //up
-        if(gamestate[pos - 8] == 0) {       //neighbor is free
+    visited[pos] = 1;
+    if(pos > 8 && visited[pos - 9] == 0) {   //up
+        if(gamestate[pos - 9] == 0) {       //neighbor is free
             liberties = liberties + 1;
-            visited[pos - 8] = 1;
-        } else if(gamestate[pos - 8] == gamestate[pos]) {   //neighbor has same color
-            visited[pos - 8] = 1;
-            liberties = getLiberties(pos - 8, visited);
+            visited[pos - 9] = 1;
+        } else if(gamestate[pos - 9] == gamestate[pos]) {   //neighbor has same color
+            visited[pos - 9] = 1;
+            liberties = liberties + getLiberties(pos - 9, visited);
         }
     }
-    if(pos < 72 && visited[pos + 8] == 0) {   //down
-        if(gamestate[pos + 8] == 0) {       //neighbor is free
+    if(pos < 72 && visited[pos + 9] == 0) {   //down
+        if(gamestate[pos + 9] == 0) {       //neighbor is free
             liberties = liberties + 1;
-            visited[pos + 8] = 1;
-        } else if(gamestate[pos + 8] == gamestate[pos]) {   //neighbor has same color
-            visited[pos + 8] = 1;
-            liberties = getLiberties(pos + 8, visited);
+            visited[pos + 9] = 1;
+        } else if(gamestate[pos + 9] == gamestate[pos]) {   //neighbor has same color
+            visited[pos + 9] = 1;
+            liberties = liberties + getLiberties(pos + 9, visited);
         }
     }
     if(pos % 9 > 0 && visited[pos - 1] == 0) {   //left
@@ -134,7 +133,7 @@ function getLiberties(pos, visited) {
             visited[pos - 1] = 1;
         } else if(gamestate[pos - 1] == gamestate[pos]) {   //neighbor has same color
             visited[pos - 1] = 1;
-            liberties = getLiberties(pos - 1, visited);
+            liberties = liberties + getLiberties(pos - 1, visited);
         }
     }
     if(pos % 9 < 8 && visited[pos + 1] == 0) {   //right
@@ -143,7 +142,7 @@ function getLiberties(pos, visited) {
             visited[pos + 1] = 1;
         } else if(gamestate[pos + 1] == gamestate[pos]) {   //neighbor has same color
             visited[pos + 1] = 1;
-            liberties = getLiberties(pos + 1, visited);
+            liberties = liberties + getLiberties(pos + 1, visited);
         }
     }
     return liberties;
