@@ -824,9 +824,7 @@ function remove_gamestate(gameName) {
 function end_go() {
     closeOverlay();
 
-    try {
-        tremola.games['tremola_go'][get_opponent_id];
-    } catch (error) {
+    if (!is_game_running()) {
         launch_snackbar("no ongoing game")
         return;
     }
@@ -838,9 +836,7 @@ function end_go() {
 function pass_go() {
     closeOverlay();
 
-    try {
-        tremola.games['tremola_go'][get_opponent_id];
-    } catch (error) {
+    if (!is_game_running()) {
         launch_snackbar("no ongoing game")
         return;
     }
