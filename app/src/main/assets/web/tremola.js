@@ -169,12 +169,23 @@ function menu_go() {
 //        return;
 //    }
 
+    if (tremola.chats[curr_chat].members.length != 2) {
+        launch_snackbar("can only play Go with 2 players");
+        return;
+    }
+
      closeOverlay();
      document.getElementById('go-overlay').style.display = 'initial';
      document.getElementById('overlay-bg').style.display = 'initial';
      overlayIsActive = true;
 
-
+    //start game or load existing gamestate
+    const opponent_id = get_opponent_id();
+    if(!("tremola_go" in tremola.games)) {
+        startTremolaGo(myId, opponent_id);
+    }
+    const open_games = tremola.games['tremola_go'];
+    loadTremolaGo(open_games[opponent_id]);
 }
 
 function menu_import_id() {
@@ -582,6 +593,7 @@ function resetTremola() { // wipes browser-side content
         "chats": {},
         "contacts": {},
         "profile": {},
+        "games": {},
         "id": myId,
         "settings": get_default_settings()
     }
@@ -718,6 +730,17 @@ function b2f_initialize(id) {
 
     closeOverlay();
     setScenario('chats');
+}
+
+
+// --- Games
+
+function get_opponent_id() {
+    const id = tremola.chats[curr_chat].members[0];
+    if (id !== myId) {
+        return id;
+    }
+    return tremola.chats[curr_chat].members[1];
 }
 
 // --- eof
