@@ -24,6 +24,11 @@ function startTremolaGo(playerId, opponentId) {
     opponentColor = WHITE;
 }
 
+function loadTremolaGo(nextGameState) {
+    gamestate = nextGameState;
+    //TODO: ui
+}
+
 function putStone(pos) {
     if(pos == 0) {
         gamestate[86] = gamestate[86] + 1;      //pass the turn
