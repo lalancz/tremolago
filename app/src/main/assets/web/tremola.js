@@ -174,18 +174,27 @@ function menu_go() {
         return;
     }
 
+    //start game or load existing gamestate
+    const opponent_id = get_opponent_id();
+
+    if(!('games' in tremola)) {
+        tremola.games = {};
+    }
+
+    if(!("tremola_go" in tremola.games)) {
+        tremola.games['tremola_go'] = {};
+        tremola.games['tremola_go'][opponent_id] = startTremolaGo(myId, opponent_id);
+    }
+    const open_games = tremola.games['tremola_go'];
+    loadTremolaGo(open_games[opponent_id]);
+
+
      closeOverlay();
      document.getElementById('go-overlay').style.display = 'initial';
      document.getElementById('overlay-bg').style.display = 'initial';
      overlayIsActive = true;
 
-    //start game or load existing gamestate
-    const opponent_id = get_opponent_id();
-    if(!("tremola_go" in tremola.games)) {
-        startTremolaGo(myId, opponent_id);
-    }
-    const open_games = tremola.games['tremola_go'];
-    loadTremolaGo(open_games[opponent_id]);
+
 }
 
 function menu_import_id() {
@@ -741,6 +750,14 @@ function get_opponent_id() {
         return id;
     }
     return tremola.chats[curr_chat].members[1];
+}
+
+function is_game_running(gameName) {
+    if (!(gameName in tremola.games)) {
+        return false;
+    }
+    const opponent_id = get_opponent_id();
+    return opponent_id in tremola.games[gameName];
 }
 
 // --- eof

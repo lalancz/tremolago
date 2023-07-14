@@ -22,11 +22,13 @@ function startTremolaGo(playerId, opponentId) {
     currentPlayer = BLACK;
     playerColor = BLACK;    //TODO determine color
     opponentColor = WHITE;
+
+    return gamestate;
 }
 
 function loadTremolaGo(nextGameState) {
     gamestate = nextGameState;
-    //TODO: ui
+    updateUI();
 }
 
 function sendGameState() {
@@ -34,15 +36,16 @@ function sendGameState() {
 }
 
 function putStone(pos) {
-    gamestate[86] = gamestate[86] + 1;
+    gamestate[85] = gamestate[85] + 1;
     if(pos == -1) {
         //pass the turn
+        gamestate[86] = gamestate[86] + 1;
         sendGameState();
         return;
     }
     //put stone into play
     if(pos >= 0 && pos < 81) {
-        gamestate[pos] = playerColor;
+        gamestate[pos] = currentPlayer;
         gamestate[86] = 0;
     }
 
@@ -72,9 +75,11 @@ function putStone(pos) {
 }
 
 function captureStones(pos) {
-    visited = new Array(81).fill(0);
-    liberties = getLiberties(pos, visited);
+    var visited = new Array(81).fill(0);
+    var liberties = getLiberties(pos, visited);
+    //launch_snackbar(liberties.toString());
     if(liberties == 0) {
+        //launch_snackbar("pre-remove");
         color = gamestate[pos];
         visited = new Array(81).fill(0);
         removeStone(pos, visited, color);
@@ -104,7 +109,7 @@ function removeStone(pos, visited, color) {
 }
 
 function getLiberties(pos, visited) {
-    liberties;
+    var liberties = 0;
     if(pos > 8 && visited[pos - 8] == 0) {   //up
         if(gamestate[pos - 8] == 0) {       //neighbor is free
             liberties = liberties + 1;
@@ -184,8 +189,29 @@ function makeMove(id) {
 
     if (currentPlayer == BLACK) {
         document.getElementById(id).style.backgroundColor = '#000';
+        putStone(id-1);
     } else {
         document.getElementById(id).style.backgroundColor = '#FFFFFF';
+        putStone(id-1);
+    }
+    updateUI();
+}
+
+function updateUI() {
+    for (let i = 1; i <= 81; i++) {
+        document.getElementById(i.toString()).style.backgroundColor = getColor(gamestate[i-1]);
+    }
+    currentPlayer = (gamestate[85] % 2) + 1;
+    opponentColor = ((gamestate[85] + 1) % 2) + 1;
+}
+
+function getColor(id) {
+    if (id == 0) {
+        return '';
+    } else if (id == BLACK) {
+        return '#000';
+    } else {
+        return '#FFFFFF';
     }
 }
 
