@@ -49,6 +49,7 @@ let scenarioMenu = {
     'posts': [['Rename', 'menu_edit_convname'],
         ['(un)Forget', 'menu_forget_conv'],
         ['Go (game)', 'menu_go'],
+        ['End ongoing Go game', 'end_go'],
         ['Settings', 'menu_settings'],
         ['About', 'menu_about']],
     'members': [['Settings', 'menu_settings'],
@@ -329,6 +330,17 @@ function menu_game() {
     document.getElementById('about_go-overlay').style.display = 'initial';
     document.getElementById('overlay-bg').style.display = 'initial';
     overlayIsActive = true;
+}
+
+function end_go() {
+    closeOverlay();
+
+//    TODO: implement gameOngoing or equivalent
+//    if (gameOngoing) {
+//        launch_snackbar("game ended");
+//    } else {
+//        launch_snackbar("no ongoing game");
+//    }
 }
 
 // ---
