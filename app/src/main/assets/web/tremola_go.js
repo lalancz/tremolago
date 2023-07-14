@@ -175,15 +175,6 @@ function getWinner() {
     }
 }
 
-function launch_snackbar(txt) {
-    var sb = document.getElementById("snackbar");
-    sb.innerHTML = txt;
-    sb.className = "show";
-    setTimeout(function () {
-        sb.className = sb.className.replace("show", "");
-    }, 3000);
-}
-
 function makeMove(id) {
     if (document.getElementById(id).style.backgroundColor != '') {
        launch_snackbar("space already occupied");

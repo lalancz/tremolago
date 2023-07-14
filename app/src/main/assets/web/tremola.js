@@ -164,15 +164,11 @@ function menu_forget_conv() {
 }
 
 function menu_go() {
-//    if (curr_chat == recps2nm([myId])) {
-//        launch_snackbar("cannot play games with yourself");
-//        return;
-//    }
-
     if (tremola.chats[curr_chat].members.length != 2) {
         launch_snackbar("can only play Go with 2 players");
         return;
     }
+
 
     //start game or load existing gamestate
     const opponent_id = get_opponent_id();
@@ -193,7 +189,6 @@ function menu_go() {
      document.getElementById('go-overlay').style.display = 'initial';
      document.getElementById('overlay-bg').style.display = 'initial';
      overlayIsActive = true;
-
 
 }
 
@@ -808,6 +803,34 @@ function post_new_gamestate(gameName, gameState) {
 function remove_gamestate(gameName) {
     const opponent_id = get_opponent_id();
     delete tremola.games[gameName][opponent_id];
+}
+
+function end_go() {
+    closeOverlay();
+
+    try {
+        tremola.games['tremola_go'][get_opponent_id];
+    } catch (error) {
+        launch_snackbar("no ongoing game")
+        return;
+    }
+
+    forfeit();
+    launch_snackbar("game forfeited");
+}
+
+function pass_go() {
+    closeOverlay();
+
+    try {
+        tremola.games['tremola_go'][get_opponent_id];
+    } catch (error) {
+        launch_snackbar("no ongoing game")
+        return;
+    }
+
+    putStone(-1);
+    launch_snackbar("turn passed");
 }
 
 // --- eof
