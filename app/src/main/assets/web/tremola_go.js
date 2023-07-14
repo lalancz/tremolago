@@ -176,6 +176,11 @@ function getWinner() {
 }
 
 function makeMove(id) {
+    if (!isPlayersTurn(myId)) {
+        launch_snackbar("not your turn");
+        return;
+    }
+
     if (document.getElementById(id).style.backgroundColor != '') {
        launch_snackbar("space already occupied");
        return;
