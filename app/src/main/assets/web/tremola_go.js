@@ -20,7 +20,7 @@ function startTremolaGo(playerId, opponentId) {
     gamestate[85] = 0;      //turn counter
     gamestate[86] = 0;      //pass counter
     currentPlayer = BLACK;
-    playerColor = BLACK;    //TODO determine color
+    playerColor = BLACK;    //player who initiates always is black
     opponentColor = WHITE;
 
     return gamestate;
@@ -55,12 +55,10 @@ function sendGameState() {
 }
 
 function putStone(pos) {
-    launch_snackbar("put stone: " + pos);
     gamestate[85] = gamestate[85] + 1;
     if(pos == -1) {
         //pass the turn
         gamestate[86] = gamestate[86] + 1;
-        launch_snackbar("you pass the turn");
         sendGameState();
         return;
     }

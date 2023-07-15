@@ -176,9 +176,10 @@ function menu_go() {
     if(!('games' in tremola)) {
         tremola.games = {};
     }
-
     if(!("tremola_go" in tremola.games)) {
         tremola.games['tremola_go'] = {};
+    }
+    if(!(opponent_id in tremola.games['tremola_go'])) {
         tremola.games['tremola_go'][opponent_id] = startTremolaGo(myId, opponent_id);
     }
     const open_games = tremola.games['tremola_go'];
@@ -809,7 +810,7 @@ function post_new_gamestate(gameName, gameState) {
     const opponent_id = get_opponent_id();
     //update stored gamestate for sender
     tremola.games[gameName][opponent_id] = gamestate;
-    launch_snackbar("update gamestate");
+    //launch_snackbar("update gamestate");
 
     //send gamestate to opponent
     backend("priv:gamePost " + gameName + " " + gameState + " " + opponent_id);
@@ -819,7 +820,6 @@ function post_new_gamestate(gameName, gameState) {
 function remove_gamestate(gameName) {
     const opponent_id = get_opponent_id();
     delete tremola.games[gameName][opponent_id];
-    launch_snackbar("gamestate removed")
 }
 
 function end_go() {
