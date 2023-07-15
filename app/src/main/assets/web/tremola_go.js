@@ -35,6 +35,7 @@ function sendGameState() {
     post_new_gamestate("tremola_go", gamestate);
 
     if(isGameOver()) {
+        adjustScore();
         if (getWinner() == myId) {
             document.getElementById('winner-overlay').style.display = 'initial';
             document.getElementById('overlay-bg').style.display = 'initial';
@@ -89,6 +90,9 @@ function putStone(pos) {
         }
     }
 
+    //capture own stone(s) if stone was placed in opponent-surrounded area
+    captureStones(pos);
+
     sendGameState();
 }
 
@@ -109,7 +113,13 @@ function removeStone(pos, visited, color) {
     }
 
     gamestate[pos] = 0;
-    gamestate[82] = gamestate[82] + 1;  //increase player score
+    //increase player score
+    if(color == BLACK) {    //black
+        gamestate[82] = gamestate[82] + 1;
+    } else {                //white
+        gamestate[84] = gamestate[84] + 1;
+    }
+
     if(pos > 8 && visited[pos - 9] == 0) {   //up
         removeStone(pos - 9, visited, color);
     }
@@ -166,6 +176,93 @@ function getLiberties(pos, visited) {
     return liberties;
 }
 
+function isSurrounded(pos, visited) {
+    visited[pos] = 1;
+    var color;
+    var other;
+
+    if(pos > 8 && visited[pos - 9] == 0) {   //up
+        if(gamestate[pos - 9] != 0) {
+            other = gamestate[pos - 9];
+        } else {
+            other = isSurrounded(pos - 9, visited);
+        }
+        if(color > 0 && color != other) {
+            color = -1;
+        } else if(color == 0) {
+            color = other;
+        }
+    }
+    if(pos < 72 && visited[pos + 9] == 0) {   //down
+        if(gamestate[pos + 9] != 0) {
+            other = gamestate[pos + 9];
+        } else {
+            other = isSurrounded(pos + 9, visited);
+        }
+        if(color > 0 && color != other) {
+            color = -1;
+        } else if(color == 0) {
+            color = other;
+        }
+    }
+    if(pos % 9 > 0 && visited[pos - 1] == 0) {   //left
+        if(gamestate[pos - 1] != 0) {
+            other = gamestate[pos - 1];
+        } else {
+            other = isSurrounded(pos - 1, visited);
+        }
+        if(color > 0 && color != other) {
+            color = -1;
+        } else if(color == 0) {
+            color = other;
+        }
+    }
+    if(pos % 9 < 8 && visited[pos + 1] == 0) {   //right
+        if(gamestate[pos + 1] != 0) {
+            other = gamestate[pos + 1];
+        } else {
+            other = isSurrounded(pos + 1, visited);
+        }
+        if(color > 0 && color != other) {
+            color = -1;
+        } else if(color == 0) {
+            color = other;
+        }
+    }
+    return color;
+}
+
+function areaSize(pos, visited) {
+    visited[pos] = 1;
+    var size = 1;
+
+    if(pos > 8 && visited[pos - 9] == 0) {   //up
+        if(gamestate[pos - 9] == 0) {       //neighbor is free
+            visited[pos - 9] = 1;
+            size = size + areaSize(pos - 9, visited);
+        }
+    }
+    if(pos < 72 && visited[pos + 9] == 0) {   //down
+        if(gamestate[pos + 9] == 0) {       //neighbor is free
+            visited[pos + 9] = 1;
+            size = size + areaSize(pos + 9, visited);
+        }
+    }
+    if(pos % 9 > 0 && visited[pos - 1] == 0) {   //left
+        if(gamestate[pos - 1] == 0) {       //neighbor is free
+            visited[pos - 1] = 1;
+            size = size + areaSize(pos - 1, visited);
+        }
+    }
+    if(pos % 9 < 8 && visited[pos + 1] == 0) {   //right
+        if(gamestate[pos + 1] == 0) {       //neighbor is free
+            visited[pos + 1] = 1;
+            size = size + areaSize(pos + 1, visited);
+        }
+    }
+    return size;
+}
+
 function isPlayersTurn(myId) {
     if(gamestate[85] % 2 == 0 && gamestate[81] == myId) {
         return true;
@@ -187,6 +284,22 @@ function getWinner() {
     } else {
         return -1;      //draw
     }
+}
+
+function adjustScore() {
+    var visited = new Array(81).fill(0);
+    for(let i = 0; i < 81; i++) {
+        if(gamestate[i] == 0 && visited[i] == 0) {
+            var color = isSurrounded(i, visited);
+            var areaVisited = new Array(81).fill(0);
+            if(color = BLACK) {
+                gamestate[82] = gamestate[82] + areaSize(i, areaVisited);
+            } else {
+                gamestate[84] = gamestate[84] + areaSize(i, areaVisited);
+            }
+        }
+    }
+    launch_snackbar("adjusted score");
 }
 
 function makeMove(id) {
@@ -232,9 +345,9 @@ function forfeit() {
     //set players points to -1 and pass counter to 2
     //so end condition for game is met and player loses due to points
     if(myId === gamestate[81]) {    //black
-        gamestate[82] = -1;
+        gamestate[82] = -100;
     } else {                        //white
-        gamestate[84] = -1;
+        gamestate[84] = -100;
     }
     gamestate[86] = 2;
     sendGameState();
