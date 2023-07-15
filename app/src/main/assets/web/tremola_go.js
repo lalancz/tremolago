@@ -32,20 +32,23 @@ function loadTremolaGo(nextGameState) {
 }
 
 function sendGameState() {
+    if(isGameOver()) {
+        adjustScore();
+    }
     post_new_gamestate("tremola_go", gamestate);
 
     if(isGameOver()) {
-        adjustScore();
+        //launch_snackbar("score," + gamestate[82] + ":" + gamestate[84]);
         if (getWinner() == myId) {
             document.getElementById('winner-overlay').style.display = 'initial';
             document.getElementById('overlay-bg').style.display = 'initial';
             overlayIsActive = true;
         } else if (getWinner() == -1) {
-            document.getElementById('loser-overlay').style.display = 'initial';
+            document.getElementById('tie-overlay').style.display = 'initial';
             document.getElementById('overlay-bg').style.display = 'initial';
             overlayIsActive = true;
         } else {
-            document.getElementById('tie-overlay').style.display = 'initial';
+            document.getElementById('loser-overlay').style.display = 'initial';
             document.getElementById('overlay-bg').style.display = 'initial';
             overlayIsActive = true;
         }
@@ -114,10 +117,10 @@ function removeStone(pos, visited, color) {
 
     gamestate[pos] = 0;
     //increase player score
-    if(color == BLACK) {    //black
-        gamestate[82] = gamestate[82] + 1;
-    } else {                //white
+    if(color == BLACK) {    //black stone
         gamestate[84] = gamestate[84] + 1;
+    } else {                //white stone
+        gamestate[82] = gamestate[82] + 1;
     }
 
     if(pos > 8 && visited[pos - 9] == 0) {   //up
@@ -292,20 +295,19 @@ function adjustScore() {
         if(gamestate[i] == 0 && visited[i] == 0) {
             var color = isSurrounded(i, visited);
             var areaVisited = new Array(81).fill(0);
-            if(color = BLACK) {
+            if(color == BLACK) {
                 gamestate[82] = gamestate[82] + areaSize(i, areaVisited);
-            } else {
+            } else if(color == WHITE) {
                 gamestate[84] = gamestate[84] + areaSize(i, areaVisited);
             }
         }
     }
-    launch_snackbar("adjusted score");
 }
 
 function makeMove(id) {
     if(id == -1) {  //forfeit
         forfeit();
-        launch_snackbar("you forfeit the game");
+        //launch_snackbar("you forfeit the game");
         return;
     }
     /*if (!isPlayersTurn(myId)) {
@@ -315,7 +317,7 @@ function makeMove(id) {
 
     if(id == 0) {   //pass turn
         putStone(-1);
-        launch_snackbar("you pass the turn");
+        //launch_snackbar("you pass the turn");
         updateUI();
         return;
     }
@@ -356,7 +358,7 @@ function getColor(id) {
 function forfeit() {
     //set players points to -100 and pass counter to 2
     //so end condition for game is met and player loses due to points
-    if(myId === gamestate[81]) {    //black
+    if(myId == gamestate[81]) {    //black
         gamestate[82] = -100;
     } else {                        //white
         gamestate[84] = -100;

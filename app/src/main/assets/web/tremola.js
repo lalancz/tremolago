@@ -191,11 +191,11 @@ function menu_go() {
             document.getElementById('overlay-bg').style.display = 'initial';
             overlayIsActive = true;
         } else if (getWinner() == -1) {
-            document.getElementById('loser-overlay').style.display = 'initial';
+            document.getElementById('tie-overlay').style.display = 'initial';
             document.getElementById('overlay-bg').style.display = 'initial';
             overlayIsActive = true;
         } else {
-            document.getElementById('tie-overlay').style.display = 'initial';
+            document.getElementById('loser-overlay').style.display = 'initial';
             document.getElementById('overlay-bg').style.display = 'initial';
             overlayIsActive = true;
         }
