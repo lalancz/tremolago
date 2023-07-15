@@ -55,10 +55,12 @@ function sendGameState() {
 }
 
 function putStone(pos) {
+    launch_snackbar("put stone: " + pos);
     gamestate[85] = gamestate[85] + 1;
     if(pos == -1) {
         //pass the turn
         gamestate[86] = gamestate[86] + 1;
+        launch_snackbar("you pass the turn");
         sendGameState();
         return;
     }
@@ -303,12 +305,24 @@ function adjustScore() {
 }
 
 function makeMove(id) {
-    if (!isPlayersTurn(myId)) {
+    if(id == -1) {  //forfeit
+        forfeit();
+        launch_snackbar("you forfeit the game");
+        return;
+    }
+    /*if (!isPlayersTurn(myId)) {
         launch_snackbar("not your turn");
+        return;
+    }*/
+
+    if(id == 0) {   //pass turn
+        putStone(-1);
+        launch_snackbar("you pass the turn");
+        updateUI();
         return;
     }
 
-    if (document.getElementById(id).style.backgroundColor != '') {
+    if (id > 0 && document.getElementById(id).style.backgroundColor != '') {
        launch_snackbar("space already occupied");
        return;
     }
@@ -342,7 +356,7 @@ function getColor(id) {
 }
 
 function forfeit() {
-    //set players points to -1 and pass counter to 2
+    //set players points to -100 and pass counter to 2
     //so end condition for game is met and player loses due to points
     if(myId === gamestate[81]) {    //black
         gamestate[82] = -100;

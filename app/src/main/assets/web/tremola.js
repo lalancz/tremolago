@@ -819,30 +819,31 @@ function post_new_gamestate(gameName, gameState) {
 function remove_gamestate(gameName) {
     const opponent_id = get_opponent_id();
     delete tremola.games[gameName][opponent_id];
+    launch_snackbar("gamestate removed")
 }
 
 function end_go() {
     closeOverlay();
 
-    if (!is_game_running()) {
+    if (!is_game_running("tremola_go")) {
         launch_snackbar("no ongoing game")
         return;
     }
 
-    forfeit();
-    launch_snackbar("game forfeited");
+    makeMove(-1);
+    //launch_snackbar("game forfeited");
 }
 
 function pass_go() {
     closeOverlay();
 
-    if (!is_game_running()) {
+    if (!is_game_running("tremola_go")) {
         launch_snackbar("no ongoing game")
         return;
     }
 
-    putStone(-1);
-    launch_snackbar("turn passed");
+    makeMove(0);
+    //launch_snackbar("turn passed");
 }
 
 // --- eof
