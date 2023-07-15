@@ -37,8 +37,7 @@ let scenarioDisplay = {
 let scenarioMenu = {
     'chats': [['New conversation', 'menu_new_conversation'],
         ['Settings', 'menu_settings'],
-        ['About', 'menu_about'],
-        ['About Go (game)', 'menu_game']],
+        ['About', 'menu_about']],
     'contacts': [['New contact', 'menu_new_contact'],
         ['Settings', 'menu_settings'],
         ['About', 'menu_about']],
@@ -49,8 +48,6 @@ let scenarioMenu = {
     'posts': [['Rename', 'menu_edit_convname'],
         ['(un)Forget', 'menu_forget_conv'],
         ['Go - play', 'menu_go'],
-        ['Go - forfeit', 'end_go'],
-        ['Go - pass', 'pass_go'],
         ['Settings', 'menu_settings'],
         ['About', 'menu_about']],
     'members': [['Settings', 'menu_settings'],
