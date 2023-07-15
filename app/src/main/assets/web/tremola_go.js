@@ -38,7 +38,7 @@ function sendGameState() {
     post_new_gamestate("tremola_go", gamestate);
 
     if(isGameOver()) {
-        //launch_snackbar("score," + gamestate[82] + ":" + gamestate[84]);
+        launch_snackbar("score," + gamestate[82] + ":" + gamestate[84]);
         if (getWinner() == myId) {
             document.getElementById('winner-overlay').style.display = 'initial';
             document.getElementById('overlay-bg').style.display = 'initial';
@@ -181,7 +181,7 @@ function getLiberties(pos, visited) {
 
 function isSurrounded(pos, visited) {
     visited[pos] = 1;
-    var color;
+    var color = 0;
     var other;
 
     if(pos > 8 && visited[pos - 9] == 0) {   //up
@@ -307,17 +307,17 @@ function adjustScore() {
 function makeMove(id) {
     if(id == -1) {  //forfeit
         forfeit();
-        //launch_snackbar("you forfeit the game");
+        launch_snackbar("you forfeit the game");
         return;
     }
-    /*if (!isPlayersTurn(myId)) {
+    if (!isPlayersTurn(myId)) {
         launch_snackbar("not your turn");
         return;
-    }*/
+    }
 
     if(id == 0) {   //pass turn
         putStone(-1);
-        //launch_snackbar("you pass the turn");
+        launch_snackbar("you pass the turn");
         updateUI();
         return;
     }
