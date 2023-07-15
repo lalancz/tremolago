@@ -224,6 +224,12 @@
 
         <div id='go-overlay'>
             <div>
+                <div style="position: absolute; bottom: 25%; left: 10%; justify-content: center; display: inline; vertical-align: middle;">
+                    <button class="go_action_button" onclick="pass_go()">Pass</button>
+                    <button class="go_action_button" onclick="end_go()">Forfeit</button>
+                    <button class="go_action_button" onclick="menu_game()">About</button>
+                </div>
+
                 <div class='qr-overlay' style="display: initial; align: center; background-image: url('img/go_board.svg'); width: 325px; height: 325px; background-size: cover;">
                     <div class='go_board_buttons'>
                         <div class='go_button' id='1' onclick="makeMove(this.id);"></div>
@@ -324,12 +330,6 @@
                         <div class='go_button' id='80' onclick="makeMove(this.id);"></div>
                         <div class='go_button' id='81' onclick="makeMove(this.id);"></div>
                     </div>
-                </div>
-
-                <div style="position: absolute; bottom: 25%; left: 10%; justify-content: center; display: inline; vertical-align: middle;">
-                    <button class="go_action_button" onclick="pass_go()">Pass</button>
-                    <button class="go_action_button" onclick="end_go()">Forfeit</button>
-                    <button class="go_action_button" onclick="menu_game()">About</button>
                 </div>
             </div>
         </div>
