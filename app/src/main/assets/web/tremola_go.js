@@ -14,9 +14,9 @@ let opponentColor;
 function startTremolaGo(playerId, opponentId) {
     gamestate = new Array(87).fill(0);
     gamestate[81] = playerId;
-    gamestate[82] = 0;      //player points
+    gamestate[82] = 0;      //black points
     gamestate[83] = opponentId;
-    gamestate[84] = 0;      //opponent points
+    gamestate[84] = 0;      //white points
     gamestate[85] = 0;      //turn counter
     gamestate[86] = 0;      //pass counter
     currentPlayer = BLACK;
@@ -29,6 +29,20 @@ function startTremolaGo(playerId, opponentId) {
 function loadTremolaGo(nextGameState) {
     gamestate = nextGameState;
     updateUI();
+
+    var text = "";
+    if(isPlayersTurn(myId)) {
+        text = "It's your turn. ";
+    } else {
+        text = "It's your opponents turn. ";
+    }
+    if(gamestate[81] == myId) {
+        text = text + "You are Black."
+    } else {
+        text = text + "You are White."
+    }
+
+    launch_snackbar(text);
 }
 
 function sendGameState() {
